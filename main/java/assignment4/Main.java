@@ -27,8 +27,8 @@ public class Main {
         System.out.println(filteredUser);
 
         // Filter by Timespan
-        Instant testStart = Instant.parse("2017-11-11T00:00:00Z");
-        Instant testEnd = Instant.parse("2017-11-12T12:00:00Z");
+        Instant testStart = Instant.parse("2017-11-08T00:00:00Z");
+        Instant testEnd = Instant.parse("2017-11-09T12:00:00Z");
         assignment4.Timespan timespan = new assignment4.Timespan(testStart,testEnd);
         List<assignment4.Tweets> filteredTimeSpan = filter.inTimespan(tweetsList,timespan);
         System.out.println(filteredTimeSpan);

@@ -61,23 +61,21 @@ public class TweetReader {
             Tweets tweets = mapper.readValue(jsonString, Tweets.class);
             if (tweets != null){
                 if(canParseDate(tweets.getDate()) && (canParseName(tweets.getName())) && (canParseText(tweets.getText()))){
-
+                    tweetList.add(tweets);
                 }
             }
         }
-
-
         return tweetList;
     }
 
     public static boolean canParseDate(String date){
         String startDateString = date;
-        DateFormat df = new SimpleDateFormat("YYYY-MM-DDT00:00:00Z");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'");
         Date startDate;
         try {
             startDate = df.parse(startDateString);
             String newDateString = df.format(startDate);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             return false;
         }
         return true;

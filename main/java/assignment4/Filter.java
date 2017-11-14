@@ -1,5 +1,6 @@
 package assignment4;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +26,13 @@ public class Filter {
      * @return all and only the tweets in the list whose author is username,
      *         in the same order as in the input list.
      */
-    public static List<assignment4.Tweets> writtenBy(List<assignment4.Tweets> tweets, String username) {
-        List<assignment4.Tweets> filteredList = new ArrayList<assignment4.Tweets>();
+    public static List<Tweets> writtenBy(List<Tweets> tweets, String username) {
+        List<Tweets> filteredList = new ArrayList<Tweets>();
+        for (int i = 0 ; i < tweets.size(); i ++){
+            if (tweets.get(i).getName().equals(username)){
+                filteredList.add(tweets.get(i));
+            }
+        }
         return filteredList;
     }
 
@@ -40,8 +46,16 @@ public class Filter {
      * @return all and only the tweets in the list that were sent during the timespan,
      *         in the same order as in the input list.
      */
-    public static List<assignment4.Tweets> inTimespan(List<assignment4.Tweets> tweets, assignment4.Timespan timespan) {
-        List<assignment4.Tweets> filteredList = new ArrayList<assignment4.Tweets>();
+    public static List<Tweets> inTimespan(List<Tweets> tweets, Timespan timespan) {
+        List<Tweets> filteredList = new ArrayList<assignment4.Tweets>();
+        for (int i = 0 ; i < tweets.size(); i ++){
+            int isAfterStart = Instant.parse(tweets.get(i).getDate()).compareTo(timespan.getStart());
+            int isBeforeEnd = Instant.parse(tweets.get(i).getDate()).compareTo(timespan.getEnd());
+
+            if ((isAfterStart == 1) && (isBeforeEnd == -1) ){
+                filteredList.add(tweets.get(i));
+            }
+        }
         return filteredList;
     }
 
@@ -60,8 +74,22 @@ public class Filter {
      *         so "Obama" is the same as "obama".  The returned tweets are in the
      *         same order as in the input list.
      */
-    public static List<assignment4.Tweets> containing(List<assignment4.Tweets> tweets, List<String> words) {
-        List<assignment4.Tweets> filteredList = new ArrayList<assignment4.Tweets>();
+    public static List<assignment4.Tweets> containing(List<Tweets> tweets, List<String> words) {
+        List<Tweets> filteredList = new ArrayList<assignment4.Tweets>();
+        for (int i = 0 ; i < tweets.size(); i ++){
+            if(containsWord(tweets.get(i),words)){
+                filteredList.add(tweets.get(i));
+            }
+        }
         return filteredList;
+    }
+
+    public static boolean containsWord (Tweets tweet, List<String> words){
+        for(int j = 0; j < words.size(); j ++){
+            if(tweet.getText().toLowerCase().contains(words.get(j).toLowerCase())){
+                return true;
+            }
+        }
+        return false;
     }
 }
