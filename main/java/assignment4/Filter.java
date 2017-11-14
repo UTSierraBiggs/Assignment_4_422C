@@ -48,14 +48,17 @@ public class Filter {
      */
     public static List<Tweets> inTimespan(List<Tweets> tweets, Timespan timespan) {
         List<Tweets> filteredList = new ArrayList<assignment4.Tweets>();
-        for (int i = 0 ; i < tweets.size(); i ++){
-            int isAfterStart = Instant.parse(tweets.get(i).getDate()).compareTo(timespan.getStart());
-            int isBeforeEnd = Instant.parse(tweets.get(i).getDate()).compareTo(timespan.getEnd());
+        if(timespan.getEnd().compareTo(timespan.getStart()) == 1) {
+            for (int i = 0; i < tweets.size(); i++) {
+                int isAfterStart = Instant.parse(tweets.get(i).getDate()).compareTo(timespan.getStart());
+                int isBeforeEnd = Instant.parse(tweets.get(i).getDate()).compareTo(timespan.getEnd());
 
-            if ((isAfterStart == 1) && (isBeforeEnd == -1) ){
-                filteredList.add(tweets.get(i));
+                if ((isAfterStart == 1) && (isBeforeEnd == -1)) {
+                    filteredList.add(tweets.get(i));
+                }
             }
-        }
+        }else{
+            throws new InvalidTimespanException
         return filteredList;
     }
 
