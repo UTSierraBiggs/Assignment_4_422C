@@ -58,7 +58,8 @@ public class Filter {
                 }
             }
         }else{
-            throws new InvalidTimespanException
+            //throws new InvalidTimespanException
+        }
         return filteredList;
     }
 

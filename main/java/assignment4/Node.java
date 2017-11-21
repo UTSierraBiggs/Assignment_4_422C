@@ -7,6 +7,7 @@ public class Node {
 
     private String name;
     private List<Node> edges;
+    private boolean visited = false;
 
     public Node(){
         this.edges = new ArrayList<Node>();
@@ -32,5 +33,13 @@ public class Node {
 
     public void setEdges(List<Node> inputList){
         this.edges = inputList;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+
+    public boolean getVisited() {
+        return this.visited;
     }
 }
