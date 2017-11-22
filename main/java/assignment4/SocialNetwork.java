@@ -32,31 +32,43 @@ public class SocialNetwork {
      */
     public static List<String> findKMostFollower(List<assignment4.Tweets> tweets, int k) {
         Map<String,Integer> followerMap = new HashMap<>();
-        /*
+        List<String> allUsersRanked = new ArrayList<>();
 
         for (int i = 0 ; i < tweets.size() ; i ++ ){
-            Node username = followerMap.get("@" + tweets.get(i).getName());
             String[] splitTweetText= tweets.get(i).getText().split(" ");
-            for(int k = 0 ; k < splitTweetText.length; k ++){
-                String filteredString = splitTweetText[k].replaceAll("[^A-Za-z0-9@]", "");
+            for(int j = 0 ; j < splitTweetText.length; j ++){
+                String filteredString = splitTweetText[j].replaceAll("[^A-Za-z0-9@]", "");
                 if (!filteredString.isEmpty()) {
                     if (filteredString.charAt(0) == '@') {
-                        if (graph.get(filteredString) == null) {
-                            List<Node> temp = username.getEdges();
-                            temp.add(new Node(filteredString, new ArrayList<Node>()));
-                            username.setEdges(temp);
+                        if (followerMap.get(filteredString) == null) {
+                            followerMap.put(filteredString, 1);
                         } else {
-                            List<Node> temp = username.getEdges();
-                            temp.add(graph.get(filteredString));
-                            username.setEdges(temp);
+                            followerMap.put((filteredString),followerMap.get(filteredString) +1);
                         }
                     }
                 }
             }
-        }*/
+        }
+
+        while(allUsersRanked.size() < k) {
+            int currentMostFollowed = 0;
+            for (Map.Entry<String, Integer> entry : followerMap.entrySet()) {
+                if (entry.getValue() > currentMostFollowed) {
+                    currentMostFollowed = entry.getValue();
+                }
+            }
+
+            for (Map.Entry<String, Integer> entry : followerMap.entrySet()) {
+                if (entry.getValue() == currentMostFollowed) {
+                    allUsersRanked.add(entry.getKey());
+                    followerMap.put(entry.getKey(), 0);
+                }
+            }
+        }
 
 
         List<String> mostFollowers = new ArrayList<String>();
+        mostFollowers = allUsersRanked;
         return mostFollowers;
     }
 

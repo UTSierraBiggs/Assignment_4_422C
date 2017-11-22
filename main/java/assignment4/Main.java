@@ -44,27 +44,43 @@ public class Main {
         Tweets t1 = new Tweets();
         t1.setId(1);
         t1.setDate("2017-11-08T00:00:00Z");
-        t1.setName("a");
-        t1.setText("@b @c");
+        t1.setName("Shannon");
+        t1.setText("!!!@Ken hey");
 
         Tweets t2 = new Tweets();
         t2.setId(2);
         t2.setDate("2017-11-08T00:00:00Z");
-        t2.setName("b");
-        t2.setText("@a @c");
+        t2.setName("Sierra");
+        t2.setText("@Ken @Bob @Shannon wazaaaap");
 
         Tweets t3 = new Tweets();
         t3.setId(3);
         t3.setDate("2017-11-08T00:00:00Z");
-        t3.setName("c");
-        t3.setText("@a @b");
+        t3.setName("Shannon");
+        t3.setText("@Sierra yoyoyo");
+
+        Tweets t4 = new Tweets();
+        t4.setId(4);
+        t4.setDate("2017-11-08T00:00:00Z");
+        t4.setName("Ken");
+        t4.setText("@Sierra @Sierra @Shannon @Yourmom69 noot noot bitches");
+
+        Tweets t5 = new Tweets();
+        t5.setId(5);
+        t5.setDate("2017-11-08T00:00:00Z");
+        t5.setName("Bob");
+        t5.setText("@Ken hey man");
 
         customTweetList.add(t1);
         customTweetList.add(t2);
         customTweetList.add(t3);
+        customTweetList.add(t4);
+        customTweetList.add(t5);
 
         SocialNetwork test = new SocialNetwork();
-        List<Set<String>> testlist = test.findCliques(customTweetList);
+      //  List<Set<String>> testlist = test.findCliques(customTweetList);
+
+        List<String> list =  test.findKMostFollower(customTweetList, 3);
     }
 }
 
