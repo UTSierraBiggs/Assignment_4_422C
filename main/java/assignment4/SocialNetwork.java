@@ -1,5 +1,6 @@
 package assignment4;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -30,6 +31,31 @@ public class SocialNetwork {
      *         include a username at most once.
      */
     public static List<String> findKMostFollower(List<assignment4.Tweets> tweets, int k) {
+        Map<String,Integer> followerMap = new HashMap<>();
+        /*
+
+        for (int i = 0 ; i < tweets.size() ; i ++ ){
+            Node username = followerMap.get("@" + tweets.get(i).getName());
+            String[] splitTweetText= tweets.get(i).getText().split(" ");
+            for(int k = 0 ; k < splitTweetText.length; k ++){
+                String filteredString = splitTweetText[k].replaceAll("[^A-Za-z0-9@]", "");
+                if (!filteredString.isEmpty()) {
+                    if (filteredString.charAt(0) == '@') {
+                        if (graph.get(filteredString) == null) {
+                            List<Node> temp = username.getEdges();
+                            temp.add(new Node(filteredString, new ArrayList<Node>()));
+                            username.setEdges(temp);
+                        } else {
+                            List<Node> temp = username.getEdges();
+                            temp.add(graph.get(filteredString));
+                            username.setEdges(temp);
+                        }
+                    }
+                }
+            }
+        }*/
+
+
         List<String> mostFollowers = new ArrayList<String>();
         return mostFollowers;
     }
@@ -43,7 +69,6 @@ public class SocialNetwork {
      * @return list of set of all cliques in the graph
      */
     public static List<Set<String>> findCliques(List<assignment4.Tweets> tweets) {
-
         //Create a Map of Nodes and initialize them by taking the usernames from tweets
         Map<String,Node> graph = new HashMap<>();
         for(int j = 0 ; j < tweets.size(); j ++){
@@ -51,8 +76,6 @@ public class SocialNetwork {
                 graph.put("@" + tweets.get(j).getName(), new Node("@" + tweets.get(j).getName(), new ArrayList<Node>()));
             }
         }
-
-
 
         //For each tweet, get corresponding node from graph depending on tweet's username, find tags in
         //tweet, and then set the people tagged as edges in the graph node
@@ -90,29 +113,64 @@ public class SocialNetwork {
             }
         }
 
-        List<Set<String>> result = new ArrayList<Set<String>>();
+        HashSet<String> removeList = new HashSet<>();
+        HashSet<String> duplicateSet = new HashSet<>();
+        // Do subset
         for (int i = 0; i < pathArray.size(); i++) {
-            String sanitizedStr = pathArray.get(i).replace("@", "");
-            sanitizedStr = sanitizedStr.replace(",", "");
-            char[] chars = sanitizedStr.toCharArray();
-            Arrays.sort(chars);
-            String sorted = new String(chars);
-            pathArray.set(i, sorted);
-        }
-        for(int j = 0 ; j < pathArray.size(); j ++) {
-            noDuplicatePaths.add(pathArray.get(j));
-        }
-        for (String s : noDuplicatePaths) {
-            for (String r : noDuplicatePaths) {
-                if(!s.equals(r)){
-                    if(s.contains(r)){
-                        noDuplicatePaths.remove(r);
+            for (int j = 0; j < pathArray.size(); j++) {
+                if (!pathArray.get(i).equals(pathArray.get(j))) {
+                    String[] splitPath= pathArray.get(i).split(",");
+                    int counter = 0;
+                    for(int k = 0 ; k < splitPath.length; k ++) {
+                        if (pathArray.get(j).contains(splitPath[k])){
+                            counter ++;
+                        }
+                    }
+                    if(counter == splitPath.length){
+                        // add to temp array
+                        char[] temp = pathArray.get(i).toCharArray();
+                        Arrays.sort(temp);
+                        if (!duplicateSet.contains(new String(temp))) {
+                            removeList.add(pathArray.get(i));
+                            duplicateSet.add(new String(temp));
+                        }
                     }
                 }
             }
         }
 
-        return result;
+        List<String> pathArrayNoSubsets = new ArrayList<String>();
+        // for loop to remove subsets from patharray
+        Iterator iterator = removeList.iterator();
+        while (iterator.hasNext()) {
+            pathArrayNoSubsets.add((String) iterator.next());
+        }
+
+        HashSet<String> noSubsets = new HashSet<>();
+        for (int i = 0; i < pathArrayNoSubsets.size(); i++) {
+            for (int j = 0; j < pathArrayNoSubsets.size(); j++) {
+                if (!(pathArrayNoSubsets.get(i).equals(pathArrayNoSubsets.get(j)))) {
+                    String[] split = pathArrayNoSubsets.get(i).split(",");
+                    int count = 0;
+                    for (int k = 0; k < split.length; k++) {
+                        if (pathArrayNoSubsets.get(j).contains(split[k])) {
+                            count++;
+                        }
+                    }
+                    if (count == split.length) {
+                        noSubsets.add(pathArrayNoSubsets.get(i));
+                    }
+                }
+            }
+        }
+
+        List<String> res = new ArrayList<>();
+        for (int i = 0; i < pathArrayNoSubsets.size(); i++) {
+            if (!noSubsets.contains(pathArrayNoSubsets.get(i))) {
+                res.add(pathArrayNoSubsets.get(i));
+            }
+        }
+            return null;
     }
 
     public static void dfs(String pathStr, Node sourceNode, Node currentNode, List<String> pathArray) {
