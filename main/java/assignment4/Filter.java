@@ -58,7 +58,7 @@ public class Filter {
                 }
             }
         }else{
-            //throws new InvalidTimespanException
+            throw new IllegalArgumentException("End Date before Start Date");
         }
         return filteredList;
     }
